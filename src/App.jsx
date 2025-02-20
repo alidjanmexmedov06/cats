@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const App = () => {
   const [fact, setFact] = useState("");
@@ -8,18 +8,19 @@ const App = () => {
     setLoading(true);
 
     try {
-      // 📝 Подсказка 1: Направете Fetch заявка към API-то: "https://meowfacts.herokuapp.com/"
-      // 📝 Подсказка 2: Използвайте `await response.json()`, за да преобразувате резултата в JSON
-      // 📝 Подсказка 3: Вземете факта от `data.data[0]` и го запазете в `setFact()`
+      const response = await fetch("https://meowfacts.herokuapp.com/");
+      const data = await response.json();
+      setFact(data.data[0]); // Вземаме първия факт от масива
     } catch (error) {
-      // 📝 Подсказка 4: Ако има грешка, я изведете в конзолата с `console.error()`
+      console.error("Error fetching the fact:", error);
+      setFact("Oops! Couldn't fetch a cat fact. Try again! 🐱");
     }
 
     setLoading(false);
   };
 
   useEffect(() => {
-    // 📝 Подсказка 5: Извикайте `fetchFact()`, за да заредите първоначалния факт при mount
+    fetchFact(); // Зареждаме първия факт при mount
   }, []);
 
   return (
@@ -55,3 +56,4 @@ const App = () => {
 };
 
 export default App;
+
